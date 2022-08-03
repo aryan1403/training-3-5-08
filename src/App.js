@@ -1,37 +1,41 @@
 import { useState, useRef } from 'react';
 import './App.css';
-import Ttodo from "./todo";
 
 function App() {
   const inputRef = useRef();
+  const btnRef = useRef();
   const [todo, setTodo] = useState([
     {
       title: "Go to Shop",
-      tid: (Math.random() * 50)
-    },
-    { 
-      title: "Go to Shop",
-      tid: (Math.random() * 50)
+      tid: (Math.random() * 100)
     },
     {
-      title: "Go to Shop",
-      tid: (Math.random() * 50)
+      title: "Go to Shop1",
+      tid: (Math.random() * 100)
+    },
+    {
+      title: "Go to Shop2",
+      tid: (Math.random() * 100)
     }
   ]);
-  const onbtnclick = () => {
-    console.log(inputRef.current.value);
-  }
-  const deleteTodo = () => {
-    console.log(todo)
-    setTodo(todo.slice(1,todo.length));
+  const deleteTodo = (event) => {
+    let did = event.target.value;
+    let todo2 = [];
+    for(let i =0;i < todo.length; i++) {
+      if(todo[i].tid+"" !== did) {
+        todo2.push(todo[i]);
+      }
+    }
+    setTodo(todo2);
+    // setTodo(todo.slice(1,todo.length));
     // setTodo(todo.filter(e => e.id !== todo[0].tid));  
-  } 
+  }
   const addTodo = () => {
     const title = inputRef.current.value;
     // Aaryan, Arush
     setTodo([...todo, {
       title: title,
-      tid: Math.random() * 50
+      tid: Math.random() * 100
     }]);
     inputRef.current.value = '';
   }
@@ -41,7 +45,12 @@ function App() {
       <ul>
         {
           todo.map((e) => {
-            return <Ttodo title={e.title} id={e.tid} delete={deleteTodo}></Ttodo>
+            return (
+              <>
+                <li key={e.tid}>{e.title}</li>
+                <button value={e.tid} onClick={deleteTodo}>X</button>
+              </>
+            );
           })
         }
       </ul>
